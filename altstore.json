@@ -1,5 +1,5 @@
 {
-	"name": "PartyDonut's Repository",
+	"name": "DonutWare Repository",
 	"subtitle": "A source for Fladder and co.",
 	"iconURL": "https://avatars.githubusercontent.com/u/42371342",
 	"tintColor": "#3A2101",
@@ -7,7 +7,7 @@
 	  {
 	    "name": "Fladder",
 	    "bundleIdentifier": "nl.jknaapen.fladder",
-	    "developerName": "PartyDonut",
+	    "developerName": "DonutWare",
 	    "localizedDescription": "A Simple Jellyfin Frontend built on top of Flutter.",
 	    "iconURL": "https://github.com/DonutWare/Fladder/raw/develop/icons/fladder_macos_icon.png?raw=true",
 	    "category": "entertainment",
@@ -26,14 +26,22 @@
 	      }
 	    ],
 	    "versions": [
-	      {
-	        "version": "0.2.5",
-	        "buildVersion": "52",
-	        "date": "2024-10-16",
-            "size": 28835840,
-	        "downloadURL": "https://github.com/DonutWare/Fladder/releases/download/v0.2.5/fladder-iOS-0.2.5.ipa",
-	        "minOSVersion": "13"
-	      }
+			{
+				"version": "0.2.6",
+				"buildVersion": "56",
+				"date": "2024-10-18",
+				"size": 29129014,
+				"downloadURL": "https://github.com/DonutWare/Fladder/releases/download/v0.2.6/fladder-iOS-0.2.6.ipa",
+				"minOSVersion": "13"
+			},
+			{
+				"version": "0.2.5",
+				"buildVersion": "52",
+				"date": "2024-10-16",
+				"size": 28835840,
+				"downloadURL": "https://github.com/DonutWare/Fladder/releases/download/v0.2.5/fladder-iOS-0.2.5.ipa",
+				"minOSVersion": "13"
+			}
 	    ]
 	  }
 	],
