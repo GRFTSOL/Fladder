@@ -4,10 +4,10 @@ const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
 const RESOURCES = {"flutter.js": "f393d3c16b631f36852323de8e583132",
-"main.dart.js": "a033670e42825b80c6fcce28a8c2263e",
+"main.dart.js": "8a9f570ab21711aadae9c34d1db7f7ea",
 "assets/FontManifest.json": "ddca62e5fcdb7ca0b519c0085f6ba7e6",
 "assets/AssetManifest.bin": "ae629c1c943901e42b3f469147006f74",
-"assets/fonts/MaterialIcons-Regular.otf": "7936c1e3bcc83b07a2e9e5d1cbf5be62",
+"assets/fonts/MaterialIcons-Regular.otf": "513389b62016878911f39ec55708ebf4",
 "assets/packages/media_kit/assets/web/hls1.4.10.js": "bd60e2701c42b6bf2c339dcf5d495865",
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "391ff5f9f24097f4f6e4406690a06243",
 "assets/packages/font_awesome_flutter/lib/fonts/fa-brands-400.ttf": "fb3b14f34c58ee3597623ec82005dff8",
@@ -54,8 +54,8 @@ const RESOURCES = {"flutter.js": "f393d3c16b631f36852323de8e583132",
 "icons/Icon-512.png": "18f281b4702c52e4d839d358e56a6de2",
 "icons/Icon-maskable-512.png": "18f281b4702c52e4d839d358e56a6de2",
 "favicon.png": "08aaba16e59beb1d6cdf18f440ea2bbc",
-"version.json": "1045864f378b74aa877fdd25b537ea01",
-"flutter_bootstrap.js": "1c668584f9f46308b21b6d90328cc3c8"};
+"version.json": "db0948e1d43108863645a30a99f05323",
+"flutter_bootstrap.js": "e80d056bef95259692d93372d0b49e81"};
 // The application shell files that are downloaded before a service worker can
 // start.
 const CORE = ["main.dart.js",
