@@ -36,6 +36,8 @@ mixin _$ClientSettingsModel {
   double get posterSize => throw _privateConstructorUsedError;
   bool get pinchPosterZoom => throw _privateConstructorUsedError;
   bool get mouseDragSupport => throw _privateConstructorUsedError;
+  bool get requireWifi => throw _privateConstructorUsedError;
+  DynamicSchemeVariant get schemeVariant => throw _privateConstructorUsedError;
   int? get libraryPageSize => throw _privateConstructorUsedError;
 
   /// Serializes this ClientSettingsModel to a JSON map.
@@ -70,6 +72,8 @@ abstract class $ClientSettingsModelCopyWith<$Res> {
       double posterSize,
       bool pinchPosterZoom,
       bool mouseDragSupport,
+      bool requireWifi,
+      DynamicSchemeVariant schemeVariant,
       int? libraryPageSize});
 }
 
@@ -103,6 +107,8 @@ class _$ClientSettingsModelCopyWithImpl<$Res, $Val extends ClientSettingsModel>
     Object? posterSize = null,
     Object? pinchPosterZoom = null,
     Object? mouseDragSupport = null,
+    Object? requireWifi = null,
+    Object? schemeVariant = null,
     Object? libraryPageSize = freezed,
   }) {
     return _then(_value.copyWith(
@@ -166,6 +172,14 @@ class _$ClientSettingsModelCopyWithImpl<$Res, $Val extends ClientSettingsModel>
           ? _value.mouseDragSupport
           : mouseDragSupport // ignore: cast_nullable_to_non_nullable
               as bool,
+      requireWifi: null == requireWifi
+          ? _value.requireWifi
+          : requireWifi // ignore: cast_nullable_to_non_nullable
+              as bool,
+      schemeVariant: null == schemeVariant
+          ? _value.schemeVariant
+          : schemeVariant // ignore: cast_nullable_to_non_nullable
+              as DynamicSchemeVariant,
       libraryPageSize: freezed == libraryPageSize
           ? _value.libraryPageSize
           : libraryPageSize // ignore: cast_nullable_to_non_nullable
@@ -198,6 +212,8 @@ abstract class _$$ClientSettingsModelImplCopyWith<$Res>
       double posterSize,
       bool pinchPosterZoom,
       bool mouseDragSupport,
+      bool requireWifi,
+      DynamicSchemeVariant schemeVariant,
       int? libraryPageSize});
 }
 
@@ -229,6 +245,8 @@ class __$$ClientSettingsModelImplCopyWithImpl<$Res>
     Object? posterSize = null,
     Object? pinchPosterZoom = null,
     Object? mouseDragSupport = null,
+    Object? requireWifi = null,
+    Object? schemeVariant = null,
     Object? libraryPageSize = freezed,
   }) {
     return _then(_$ClientSettingsModelImpl(
@@ -292,6 +310,14 @@ class __$$ClientSettingsModelImplCopyWithImpl<$Res>
           ? _value.mouseDragSupport
           : mouseDragSupport // ignore: cast_nullable_to_non_nullable
               as bool,
+      requireWifi: null == requireWifi
+          ? _value.requireWifi
+          : requireWifi // ignore: cast_nullable_to_non_nullable
+              as bool,
+      schemeVariant: null == schemeVariant
+          ? _value.schemeVariant
+          : schemeVariant // ignore: cast_nullable_to_non_nullable
+              as DynamicSchemeVariant,
       libraryPageSize: freezed == libraryPageSize
           ? _value.libraryPageSize
           : libraryPageSize // ignore: cast_nullable_to_non_nullable
@@ -313,13 +339,15 @@ class _$ClientSettingsModelImpl extends _ClientSettingsModel
       this.themeMode = ThemeMode.system,
       this.themeColor,
       this.amoledBlack = false,
-      this.blurPlaceHolders = false,
+      this.blurPlaceHolders = true,
       this.blurUpcomingEpisodes = false,
       @LocaleConvert() this.selectedLocale,
       this.enableMediaKeys = true,
       this.posterSize = 1.0,
       this.pinchPosterZoom = false,
       this.mouseDragSupport = false,
+      this.requireWifi = true,
+      this.schemeVariant = DynamicSchemeVariant.tonalSpot,
       this.libraryPageSize})
       : super._();
 
@@ -369,11 +397,17 @@ class _$ClientSettingsModelImpl extends _ClientSettingsModel
   @JsonKey()
   final bool mouseDragSupport;
   @override
+  @JsonKey()
+  final bool requireWifi;
+  @override
+  @JsonKey()
+  final DynamicSchemeVariant schemeVariant;
+  @override
   final int? libraryPageSize;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ClientSettingsModel(syncPath: $syncPath, position: $position, size: $size, timeOut: $timeOut, nextUpDateCutoff: $nextUpDateCutoff, themeMode: $themeMode, themeColor: $themeColor, amoledBlack: $amoledBlack, blurPlaceHolders: $blurPlaceHolders, blurUpcomingEpisodes: $blurUpcomingEpisodes, selectedLocale: $selectedLocale, enableMediaKeys: $enableMediaKeys, posterSize: $posterSize, pinchPosterZoom: $pinchPosterZoom, mouseDragSupport: $mouseDragSupport, libraryPageSize: $libraryPageSize)';
+    return 'ClientSettingsModel(syncPath: $syncPath, position: $position, size: $size, timeOut: $timeOut, nextUpDateCutoff: $nextUpDateCutoff, themeMode: $themeMode, themeColor: $themeColor, amoledBlack: $amoledBlack, blurPlaceHolders: $blurPlaceHolders, blurUpcomingEpisodes: $blurUpcomingEpisodes, selectedLocale: $selectedLocale, enableMediaKeys: $enableMediaKeys, posterSize: $posterSize, pinchPosterZoom: $pinchPosterZoom, mouseDragSupport: $mouseDragSupport, requireWifi: $requireWifi, schemeVariant: $schemeVariant, libraryPageSize: $libraryPageSize)';
   }
 
   @override
@@ -396,6 +430,8 @@ class _$ClientSettingsModelImpl extends _ClientSettingsModel
       ..add(DiagnosticsProperty('posterSize', posterSize))
       ..add(DiagnosticsProperty('pinchPosterZoom', pinchPosterZoom))
       ..add(DiagnosticsProperty('mouseDragSupport', mouseDragSupport))
+      ..add(DiagnosticsProperty('requireWifi', requireWifi))
+      ..add(DiagnosticsProperty('schemeVariant', schemeVariant))
       ..add(DiagnosticsProperty('libraryPageSize', libraryPageSize));
   }
 
@@ -432,6 +468,10 @@ class _$ClientSettingsModelImpl extends _ClientSettingsModel
                 other.pinchPosterZoom == pinchPosterZoom) &&
             (identical(other.mouseDragSupport, mouseDragSupport) ||
                 other.mouseDragSupport == mouseDragSupport) &&
+            (identical(other.requireWifi, requireWifi) ||
+                other.requireWifi == requireWifi) &&
+            (identical(other.schemeVariant, schemeVariant) ||
+                other.schemeVariant == schemeVariant) &&
             (identical(other.libraryPageSize, libraryPageSize) ||
                 other.libraryPageSize == libraryPageSize));
   }
@@ -455,6 +495,8 @@ class _$ClientSettingsModelImpl extends _ClientSettingsModel
       posterSize,
       pinchPosterZoom,
       mouseDragSupport,
+      requireWifi,
+      schemeVariant,
       libraryPageSize);
 
   /// Create a copy of ClientSettingsModel
@@ -491,6 +533,8 @@ abstract class _ClientSettingsModel extends ClientSettingsModel {
       final double posterSize,
       final bool pinchPosterZoom,
       final bool mouseDragSupport,
+      final bool requireWifi,
+      final DynamicSchemeVariant schemeVariant,
       final int? libraryPageSize}) = _$ClientSettingsModelImpl;
   _ClientSettingsModel._() : super._();
 
@@ -528,6 +572,10 @@ abstract class _ClientSettingsModel extends ClientSettingsModel {
   bool get pinchPosterZoom;
   @override
   bool get mouseDragSupport;
+  @override
+  bool get requireWifi;
+  @override
+  DynamicSchemeVariant get schemeVariant;
   @override
   int? get libraryPageSize;
 
