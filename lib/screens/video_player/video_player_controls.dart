@@ -10,16 +10,14 @@ import 'package:collection/collection.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screen_brightness/screen_brightness.dart';
-import 'package:universal_html/html.dart' as html;
-import 'package:window_manager/window_manager.dart';
 
-import 'package:fladder/models/items/intro_skip_model.dart';
+import 'package:fladder/models/items/media_segments_model.dart';
 import 'package:fladder/models/media_playback_model.dart';
 import 'package:fladder/models/playback/playback_model.dart';
 import 'package:fladder/providers/settings/client_settings_provider.dart';
 import 'package:fladder/providers/settings/video_player_settings_provider.dart';
 import 'package:fladder/providers/video_player_provider.dart';
-import 'package:fladder/screens/shared/default_titlebar.dart';
+import 'package:fladder/screens/shared/default_title_bar.dart';
 import 'package:fladder/screens/video_player/components/video_playback_information.dart';
 import 'package:fladder/screens/video_player/components/video_player_controls_extras.dart';
 import 'package:fladder/screens/video_player/components/video_player_options_sheet.dart';
@@ -57,10 +55,10 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
   late final double bottomPadding = MediaQuery.of(context).viewPadding.bottom;
 
   bool _onKey(KeyEvent value) {
-    final introSkipModel = ref.read(playBackModel.select((value) => value?.introSkipModel));
+    final mediaSegments = ref.read(playBackModel.select((value) => value?.mediaSegments));
     final position = ref.read(mediaPlaybackProvider).position;
-    bool showIntroSkipButton = introSkipModel?.introInRange(position) ?? false;
-    bool showCreditSkipButton = introSkipModel?.creditsInRange(position) ?? false;
+    bool showIntroSkipButton = mediaSegments?.intro?.inRange(position) ?? false;
+    bool showOutroSkipButton = mediaSegments?.outro?.inRange(position) ?? false;
     if (value is KeyRepeatEvent) {
       if (value.logicalKey == LogicalKeyboardKey.arrowUp) {
         resetTimer();
@@ -76,14 +74,14 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
     if (value is KeyDownEvent) {
       if (value.logicalKey == LogicalKeyboardKey.keyS) {
         if (showIntroSkipButton) {
-          skipIntro(introSkipModel);
-        } else if (showCreditSkipButton) {
-          skipCredits(introSkipModel);
+          skipIntro(mediaSegments);
+        } else if (showOutroSkipButton) {
+          skipOutro(mediaSegments);
         }
         return true;
       }
       if (value.logicalKey == LogicalKeyboardKey.escape) {
-        disableFullscreen();
+        disableFullScreen();
         return true;
       }
       if (value.logicalKey == LogicalKeyboardKey.space) {
@@ -116,7 +114,7 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
 
   @override
   Widget build(BuildContext context) {
-    final introSkipModel = ref.watch(playBackModel.select((value) => value?.introSkipModel));
+    final mediaSegments = ref.watch(playBackModel.select((value) => value?.mediaSegments));
     final player = ref.watch(videoPlayerProvider.select((value) => value.controller));
     return InputHandler(
       autoFocus: false,
@@ -167,8 +165,8 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
                 Consumer(
                   builder: (context, ref, child) {
                     final position = ref.watch(mediaPlaybackProvider.select((value) => value.position));
-                    bool showIntroSkipButton = introSkipModel?.introInRange(position) ?? false;
-                    bool showCreditSkipButton = introSkipModel?.creditsInRange(position) ?? false;
+                    bool showIntroSkipButton = mediaSegments?.intro?.inRange(position) ?? false;
+                    bool showOutroSkipButton = mediaSegments?.outro?.inRange(position) ?? false;
                     return Stack(
                       children: [
                         if (showIntroSkipButton)
@@ -178,18 +176,18 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
                               padding: const EdgeInsets.all(32),
                               child: IntroSkipButton(
                                 isOverlayVisible: showOverlay,
-                                skipIntro: () => skipIntro(introSkipModel),
+                                skipIntro: () => skipIntro(mediaSegments),
                               ),
                             ),
                           ),
-                        if (showCreditSkipButton)
+                        if (showOutroSkipButton)
                           Align(
                             alignment: Alignment.centerRight,
                             child: Padding(
                               padding: const EdgeInsets.all(32),
-                              child: CreditsSkipButton(
+                              child: OutroSkipButton(
                                 isOverlayVisible: showOverlay,
-                                skipCredits: () => skipCredits(introSkipModel),
+                                skipOutro: () => skipOutro(mediaSegments),
                               ),
                             ),
                           )
@@ -262,12 +260,17 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
                       ),
                     ),
                     const SizedBox(width: 16),
-                    Flexible(
+                    Expanded(
                       child: Text(
                         currentItem?.title ?? "",
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ),
+                    if (AdaptiveLayout.of(context).inputDevice == InputDevice.touch)
+                      Tooltip(
+                          message: context.localized.stop,
+                          child: IconButton(
+                              onPressed: () => closePlayer(), icon: const Icon(IconsaxOutline.close_square))),
                   ],
                 ),
               ),
@@ -375,11 +378,13 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Tooltip(
-                            message: "Stop",
-                            child: IconButton(onPressed: () => closePlayer(), icon: const Icon(IconsaxOutline.stop))),
+                        if (AdaptiveLayout.of(context).inputDevice == InputDevice.pointer)
+                          Tooltip(
+                              message: context.localized.stop,
+                              child: IconButton(
+                                  onPressed: () => closePlayer(), icon: const Icon(IconsaxOutline.close_square))),
                         const Spacer(),
-                        if ((AdaptiveLayout.of(context).isDesktop || kIsWeb) &&
+                        if (AdaptiveLayout.of(context).inputDevice == InputDevice.pointer &&
                             ref.read(videoPlayerProvider).player != null) ...{
                           // OpenQueueButton(x),
                           // ChapterButton(
@@ -582,17 +587,17 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
     );
   }
 
-  void skipIntro(IntroOutSkipModel? introSkipModel) {
+  void skipIntro(MediaSegmentsModel? mediaSegments) {
     resetTimer();
-    final end = introSkipModel?.intro?.end;
+    final end = mediaSegments?.intro?.end;
     if (end != null) {
       ref.read(videoPlayerProvider).seek(end);
     }
   }
 
-  void skipCredits(IntroOutSkipModel? introSkipModel) {
+  void skipOutro(MediaSegmentsModel? mediaSegments) {
     resetTimer();
-    final end = introSkipModel?.credits?.end;
+    final end = mediaSegments?.outro?.end;
     if (end != null) {
       ref.read(videoPlayerProvider).seek(end);
     }
@@ -641,10 +646,10 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
 
   Future<void> clearOverlaySettings() async {
     toggleOverlay(value: true);
-    if (!(AdaptiveLayout.of(context).isDesktop || kIsWeb)) {
+    if (AdaptiveLayout.of(context).inputDevice != InputDevice.pointer) {
       ScreenBrightness().resetScreenBrightness();
     } else {
-      disableFullscreen();
+      disableFullScreen();
     }
 
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -654,18 +659,8 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
     timer.cancel();
   }
 
-  Future<void> disableFullscreen() async {
+  Future<void> disableFullScreen() async {
     resetTimer();
-    if (kIsWeb) {
-      if (html.document.fullscreenElement != null) {
-        html.document.exitFullscreen();
-        await Future.delayed(const Duration(milliseconds: 500));
-      }
-    } else {
-      final isFullScreen = await windowManager.isFullScreen();
-      if (isFullScreen) {
-        await windowManager.setFullScreen(false);
-      }
-    }
+    closeFullScreen();
   }
 }
