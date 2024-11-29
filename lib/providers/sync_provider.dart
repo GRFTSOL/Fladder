@@ -420,11 +420,11 @@ class SyncNotifier extends StateNotifier<SyncSettingsModel> {
 
     final playbackResponse = await api.itemsItemIdPlaybackInfoPost(
       itemId: syncItem.id,
-      body: const PlaybackInfoDto(
+      body: PlaybackInfoDto(
         enableDirectPlay: true,
         enableDirectStream: true,
         enableTranscoding: false,
-        deviceProfile: defaultProfile,
+        deviceProfile: ref.read(videoProfileProvider),
       ),
     );
 
@@ -457,7 +457,7 @@ class SyncNotifier extends StateNotifier<SyncSettingsModel> {
     try {
       if (!skipDownload && currentTask.task == null) {
         final downloadTask = DownloadTask(
-          url: downloadString,
+          url: Uri.parse(downloadString).toString(),
           directory: syncItem.directory.path,
           filename: syncItem.videoFileName,
           updates: Updates.statusAndProgress,
